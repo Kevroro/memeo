@@ -16,11 +16,11 @@
         rel="stylesheet">
     <style>
         .custom-bg {
-            background-color: #993DC3;
+            background-color: #25ce88;
         }
 
         .question-box {
-            background: linear-gradient(145deg, #0d1e75, #9a18a4);
+            background: linear-gradient(145deg, #000000, #000000);
         }
     </style>
 </head>
@@ -33,7 +33,7 @@
 
     <!-- Pantalla de selección de jugadores -->
     <div id="player-setup" class="hidden fixed inset-0 flex flex-col justify-center items-center py-10 z-40">
-        <h1 class="text-white text-3xl mb-6 font-extrabold text-center">¿Quiénes van a dejarse llevar?</h1>
+        <h1 class="text-black text-3xl mb-6 font-extrabold text-center">¿Quiénes van a memearse?</h1>
         <div id="player-inputs" class="mb-4 flex flex-col items-center space-y-2">
             <!-- Las primeras dos cajitas -->
             <input type="text" class="player-name bg-white px-4 py-2 rounded" placeholder="Nombre 1">
@@ -41,7 +41,7 @@
         </div>
         <!-- Botón para añadir más cajitas -->
         <button id="add-player" class="bg-white-600 text-white py-2 px-4 rounded mb-4">+</button>
-        <button id="start-game" class="bg-gradient-to-r from-[#0d1e75] to-[#9a18a4] text-white py-2 px-6 rounded"> Empezar
+        <button id="start-game" class="bg-gradient-to-r from-[#000000] to-[#000000] text-white py-2 px-6 rounded"> Empezar
         </button>
     </div>
 
@@ -52,10 +52,10 @@
         <!-- Caja de preguntas -->
         <div class="question-box p-8 rounded-xl shadow-lg max-w-lg w-full text-center px-4 sm:px-6">
             <div id="emoji" class="emoji mb-4"></div>
-            <div id="question" class="text-white text-2xl mb-6">¡Clica en «Déjate llevar» para comenzar la experiencia!</div>
-            <button id="new-question" class="bg-purple-600 text-white py-2 px-6 rounded mb-4">Déjate llevar</button>
+            <div id="question" class="text-white text-2xl mb-6">¡Clica en «MEMEO» para memearte!</div>
+            <button id="new-question" class="bg-black-600 text-white py-2 px-6 rounded mb-4">MEMEO</button>
         </div>
-        <div id="player-scores" class="mt-6 text-white w-full max-w-md px-4 sm:px-6">
+        <div id="player-scores" class="mt-6 text-black w-full max-w-md px-4 sm:px-6">
             <!-- Este contenedor será actualizado dinámicamente con JavaScript -->
         </div>
     </div>
@@ -80,7 +80,7 @@
                     playerCount++;
                     const newInput = document.createElement("input");
                     newInput.type = "text";
-                    newInput.className = "player-name bg-white px-4 py-2 rounded";
+                    newInput.className = "player-name bg-black px-4 py-2 rounded";
                     newInput.placeholder = `Nombre ${playerCount}`;
                     playerInputsContainer.appendChild(newInput);
                 } else {
@@ -112,16 +112,16 @@
                     playerInfo.className = "flex items-center justify-between mb-2";
                     const playerName = document.createElement("p");
                     playerName.textContent = `${player.name}: ${player.score} puntos`;
-                    playerName.className = "text-lg text-white";
+                    playerName.className = "text-lg text-black";
                     const buttonContainer = document.createElement("div");
                     buttonContainer.className = "flex space-x-2";
                     const addButton = document.createElement("button");
-                    addButton.innerHTML = "➕";
-                    addButton.className = "text-white text-xl px-2 py-1 rounded hover:text-green-400";
+                    addButton.innerHTML = "🎉";
+                    addButton.className = "text-black text-xl px-2 py-1 rounded hover:text-green-400";
                     addButton.onclick = () => addScore(index);
                     const subtractButton = document.createElement("button");
-                    subtractButton.innerHTML = "➖";
-                    subtractButton.className = "text-white text-xl px-2 py-1 rounded hover:text-red-400";
+                    subtractButton.innerHTML = "☠️";
+                    subtractButton.className = "text-black text-xl px-2 py-1 rounded hover:text-red-400";
                     subtractButton.onclick = () => subtractScore(index);
                     buttonContainer.appendChild(subtractButton);
                     buttonContainer.appendChild(addButton);
@@ -142,7 +142,7 @@
             function addScore(index) {
                 players[index].score += 10;
                 if (players[index].score >= maxScore) {
-                    alert(`${players[index].name} ha obtenido la mayor puntuación, pero todas habéis ganado 💜`);
+                    alert(`¡${players[index].name} ha ganado!`);
                     setTimeout(() => location.reload(), 3000);
                 }
                 updateScores();
@@ -184,7 +184,7 @@
     </script>
 
     <footer class="fixed bottom-4 w-full text-center">
-        <p class="text-white text-sm">
+        <p class="text-black text-sm">
             &copy; 2025 Propiedad de Kevin Roldán y Judith Sancerni
         </p>
     </footer>
