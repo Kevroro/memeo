@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Mi Juego">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="apple-touch-icon" href="favicon2.png">
+    <link rel="icon" href="favicon.png" type="image/png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meet</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .custom-bg {
+            background-color: #000000;
+        }
+
+        .question-box {
+            background: linear-gradient(145deg, #0d1e75, #9a18a4);
+        }
+    </style>
+</head>
+
+<body class="custom-bg font-sans">
+    <!-- Pantalla de carga con logotipo -->
+    <div id="splash-screen" class="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <img src="logo.png" alt="Logotipo" class="w-1/2">
+    </div>
+
+    <!-- Pantalla de selección de jugadores -->
+    <div id="player-setup" class="hidden fixed inset-0 flex flex-col justify-center items-center py-10 z-40">
+        <h1 class="text-white text-3xl mb-6 font-extrabold text-center">¿Quiénes van a dejarse llevar?</h1>
+        <div id="player-inputs" class="mb-4 flex flex-col items-center space-y-2">
+            <!-- Las primeras dos cajitas -->
+            <input type="text" class="player-name bg-white px-4 py-2 rounded" placeholder="Nombre 1">
+            <input type="text" class="player-name bg-white px-4 py-2 rounded" placeholder="Nombre 2">
+        </div>
+        <!-- Botón para añadir más cajitas -->
+        <button id="add-player" class="bg-white-600 text-white py-2 px-4 rounded mb-4">+</button>
+        <button id="start-game" class="bg-gradient-to-r from-[#0d1e75] to-[#9a18a4] text-white py-2 px-6 rounded"> Empezar
+        </button>
+    </div>
+
+    <!-- Pantalla de juego -->
+    <div id="game-screen" class="hidden fixed inset-0 flex flex-col justify-center items-center py-10 z-30">
+        <!-- Logo encima de la pregunta -->
+        <img src="logoblanco.png" alt="Logotipo" class="w-24 mb-4">
+        <!-- Caja de preguntas -->
+        <div class="question-box p-8 rounded-xl shadow-lg max-w-lg w-full text-center px-4 sm:px-6">
+            <div id="emoji" class="emoji mb-4"></div>
+            <div id="question" class="text-white text-2xl mb-6">¡Clica en «Déjate llevar» para comenzar la experiencia!</div>
+            <button id="new-question" class="bg-purple-600 text-white py-2 px-6 rounded mb-4">Déjate llevar</button>
+        </div>
+        <div id="player-scores" class="mt-6 text-white w-full max-w-md px-4 sm:px-6">
+            <!-- Este contenedor será actualizado dinámicamente con JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Pantalla inicial de carga
+            setTimeout(() => {
+                document.getElementById("splash-screen").classList.add("hidden");
+                document.getElementById("player-setup").classList.remove("hidden");
+            }, 3000);
+
+            // Configurar jugadores y comenzar el juego
+            const playerInputsContainer = document.getElementById("player-inputs");
+            const addPlayerButton = document.getElementById("add-player");
+            let playerCount = 2;
+            let players = [];
+            const maxScore = 100;
+
+            addPlayerButton.addEventListener("click", () => {
+                if (playerCount < 12) {
+                    playerCount++;
+                    const newInput = document.createElement("input");
+                    newInput.type = "text";
+                    newInput.className = "player-name bg-white px-4 py-2 rounded";
+                    newInput.placeholder = `Nombre ${playerCount}`;
+                    playerInputsContainer.appendChild(newInput);
+                } else {
+                    alert("¡No puedes añadir más de 12 jugadores!");
+                }
+            });
+
+            document.getElementById("start-game").addEventListener("click", () => {
+                players = [];
+                document.querySelectorAll(".player-name").forEach(input => {
+                    if (input.value.trim()) {
+                        players.push({ name: input.value.trim(), score: 0 });
+                    }
+                });
+                if (players.length > 0) {
+                    document.getElementById("player-setup").classList.add("hidden");
+                    document.getElementById("game-screen").classList.remove("hidden");
+                    updateScores();
+                }
+            });
+
+            function updateScores() {
+                const scoresContainer = document.getElementById("player-scores");
+                scoresContainer.innerHTML = "";
+                players.forEach((player, index) => {
+                    const playerDiv = document.createElement("div");
+                    playerDiv.className = "mb-4";
+                    const playerInfo = document.createElement("div");
+                    playerInfo.className = "flex items-center justify-between mb-2";
+                    const playerName = document.createElement("p");
+                    playerName.textContent = `${player.name}: ${player.score} puntos`;
+                    playerName.className = "text-lg text-white";
+                    const buttonContainer = document.createElement("div");
+                    buttonContainer.className = "flex space-x-2";
+                    const addButton = document.createElement("button");
+                    addButton.innerHTML = "➕";
+                    addButton.className = "text-white text-xl px-2 py-1 rounded hover:text-green-400";
+                    addButton.onclick = () => addScore(index);
+                    const subtractButton = document.createElement("button");
+                    subtractButton.innerHTML = "➖";
+                    subtractButton.className = "text-white text-xl px-2 py-1 rounded hover:text-red-400";
+                    subtractButton.onclick = () => subtractScore(index);
+                    buttonContainer.appendChild(subtractButton);
+                    buttonContainer.appendChild(addButton);
+                    const progressBarContainer = document.createElement("div");
+                    progressBarContainer.className = "bg-gray-200 h-4 rounded-full overflow-hidden";
+                    const progressBar = document.createElement("div");
+                    progressBar.className = "bg-green-500 h-full";
+                    progressBar.style.width = `${(player.score / maxScore) * 100}%`;
+                    progressBarContainer.appendChild(progressBar);
+                    playerInfo.appendChild(playerName);
+                    playerInfo.appendChild(buttonContainer);
+                    playerDiv.appendChild(playerInfo);
+                    playerDiv.appendChild(progressBarContainer);
+                    scoresContainer.appendChild(playerDiv);
+                });
+            }
+
+            function addScore(index) {
+                players[index].score += 10;
+                if (players[index].score >= maxScore) {
+                    alert(`${players[index].name} ha obtenido la mayor puntuación, pero todas habéis ganado 💜`);
+                    setTimeout(() => location.reload(), 3000);
+                }
+                updateScores();
+            }
+
+            function subtractScore(index) {
+                if (players[index].score > 0) {
+                    players[index].score -= 10;
+                    updateScores();
+                } else {
+                    alert("¡Ojo! La puntuación no puede ser menor a 0");
+                }
+            }
+
+            document.getElementById("new-question").addEventListener("click", () => {
+                let availableQuestions = questions.filter(q => !usedQuestions.has(q.img));
+                if (availableQuestions.length === 0) {
+                    usedQuestions.clear();
+                    availableQuestions = questions;
+                }
+                const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+                usedQuestions.add(randomQuestion.img);
+
+                // Mostramos la imagen en lugar de texto
+                document.getElementById("question").innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-auto">`;
+            });
+
+            const questions = [
+                { img: "images/imagen1.jpg"},
+                { img: "images/imagen2.jpg"},
+                { img: "images/imagen3.jpg"},
+                { img: "images/imagen4.jpg"},
+                { img: "images/imagen5.jpg"},
+                { img: "images/imagen6.jpg"}
+            ];
+
+            const usedQuestions = new Set();
+        });
+    </script>
+
+    <footer class="fixed bottom-4 w-full text-center">
+        <p class="text-white text-sm">
+            &copy; 2025 Propiedad de Kevin Roldán y Judith Sancerni
+        </p>
+    </footer>
+</body>
+
+</html>
