@@ -30,6 +30,7 @@
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
+                padding-top: 0; /* Eliminar margen superior innecesario */
             }
 
             .w-24 {
@@ -42,18 +43,25 @@
             }
         }
 
-        .animate-image {
-            animation: fadeIn 1s ease-in-out;
+        .animate-roulette {
+            animation: roulette 3s ease-out;
         }
 
-        @keyframes fadeIn {
+        @keyframes roulette {
             0% {
-                opacity: 0;
-                transform: scale(0.95);
+                transform: rotate(0deg);
+            }
+            25% {
+                transform: rotate(90deg);
+            }
+            50% {
+                transform: rotate(180deg);
+            }
+            75% {
+                transform: rotate(270deg);
             }
             100% {
-                opacity: 1;
-                transform: scale(1);
+                transform: rotate(360deg);
             }
         }
     </style>
@@ -80,6 +88,10 @@
                 document.getElementById("game-screen").classList.remove("hidden");
             }, 3000);
 
+            let startX = 0;
+            let endX = 0;
+            let threshold = 100; // umbral para detectar el deslizamiento
+
             document.getElementById("new-question").addEventListener("click", () => {
                 let availableQuestions = questions.filter(q => !usedQuestions.has(q.img));
                 if (availableQuestions.length === 0) {
@@ -89,8 +101,36 @@
                 const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
                 usedQuestions.add(randomQuestion.img);
                 const questionElement = document.getElementById("question");
-                questionElement.innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover animate-image">`;
+                questionElement.innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover animate-roulette">`;
             });
+
+            // Detectar el deslizamiento de izquierda a derecha
+            document.getElementById("game-screen").addEventListener("touchstart", (e) => {
+                startX = e.changedTouches[0].screenX;
+            });
+
+            document.getElementById("game-screen").addEventListener("touchend", (e) => {
+                endX = e.changedTouches[0].screenX;
+                if (startX - endX > threshold) {
+                    // Deslizar a la izquierda
+                    showNextImage();
+                } else if (endX - startX > threshold) {
+                    // Deslizar a la derecha
+                    showNextImage();
+                }
+            });
+
+            function showNextImage() {
+                let availableQuestions = questions.filter(q => !usedQuestions.has(q.img));
+                if (availableQuestions.length === 0) {
+                    usedQuestions.clear();
+                    availableQuestions = questions;
+                }
+                const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+                usedQuestions.add(randomQuestion.img);
+                const questionElement = document.getElementById("question");
+                questionElement.innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover animate-roulette">`;
+            }
 
             const questions = [
                 { img: "images/imagen1.jpg"},
