@@ -26,104 +26,25 @@
 </head>
 
 <body class="custom-bg font-sans">
-    <!-- Pantalla de carga con logotipo -->
     <div id="splash-screen" class="fixed inset-0 flex items-center justify-center bg-white z-50">
         <img src="logo.png" alt="Logotipo" class="w-1/2">
     </div>
 
-    <!-- Pantalla de juego -->
     <div id="game-screen" class="hidden fixed inset-0 flex flex-col justify-center items-center py-10 z-30">
-        <!-- Logo encima de la pregunta -->
-        <img src="logo.png" alt="Logotipo" class="w-28 mb-4">
-        <!-- Caja de preguntas -->
+        <img src="logo.png" alt="Logotipo" class="w-24 mb-4">
         <div class="question-box p-8 rounded-xl shadow-lg max-w-lg w-full text-center px-4 sm:px-6">
             <div id="emoji" class="emoji mb-4"></div>
             <div id="question" class="text-white text-2xl mb-6">¡Clica en «MEMEO» para memearte!</div>
             <button id="new-question" class="bg-black-600 text-white py-2 px-6 rounded mb-4">MEMEO</button>
         </div>
-        <div id="player-scores" class="mt-6 text-black w-full max-w-md px-4 sm:px-6">
-            <!-- Este contenedor será actualizado dinámicamente con JavaScript -->
-        </div>
     </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Pantalla inicial de carga
             setTimeout(() => {
                 document.getElementById("splash-screen").classList.add("hidden");
-                document.getElementById("player-setup").classList.remove("hidden");
+                document.getElementById("game-screen").classList.remove("hidden");
             }, 3000);
-
-            // Configurar jugadores y comenzar el juego
-
-            document.getElementById("start-game").addEventListener("click", () => {
-                players = [];
-                document.querySelectorAll(".player-name").forEach(input => {
-                    if (input.value.trim()) {
-                        players.push({ name: input.value.trim(), score: 0 });
-                    }
-                });
-                if (players.length > 0) {
-                    document.getElementById("player-setup").classList.add("hidden");
-                    document.getElementById("game-screen").classList.remove("hidden");
-                    updateScores();
-                }
-            });
-
-            function updateScores() {
-                const scoresContainer = document.getElementById("player-scores");
-                scoresContainer.innerHTML = "";
-                players.forEach((player, index) => {
-                    const playerDiv = document.createElement("div");
-                    playerDiv.className = "mb-4";
-                    const playerInfo = document.createElement("div");
-                    playerInfo.className = "flex items-center justify-between mb-2";
-                    const playerName = document.createElement("p");
-                    playerName.textContent = `${player.name}: ${player.score} puntos`;
-                    playerName.className = "text-lg text-black";
-                    const buttonContainer = document.createElement("div");
-                    buttonContainer.className = "flex space-x-2";
-                    const addButton = document.createElement("button");
-                    addButton.innerHTML = "🎉";
-                    addButton.className = "text-black text-xl px-2 py-1 rounded hover:text-green-400";
-                    addButton.onclick = () => addScore(index);
-                    const subtractButton = document.createElement("button");
-                    subtractButton.innerHTML = "☠️";
-                    subtractButton.className = "text-black text-xl px-2 py-1 rounded hover:text-red-400";
-                    subtractButton.onclick = () => subtractScore(index);
-                    buttonContainer.appendChild(subtractButton);
-                    buttonContainer.appendChild(addButton);
-                    const progressBarContainer = document.createElement("div");
-                    progressBarContainer.className = "bg-gray-200 h-4 rounded-full overflow-hidden";
-                    const progressBar = document.createElement("div");
-                    progressBar.className = "bg-green-500 h-full";
-                    progressBar.style.width = `${(player.score / maxScore) * 100}%`;
-                    progressBarContainer.appendChild(progressBar);
-                    playerInfo.appendChild(playerName);
-                    playerInfo.appendChild(buttonContainer);
-                    playerDiv.appendChild(playerInfo);
-                    playerDiv.appendChild(progressBarContainer);
-                    scoresContainer.appendChild(playerDiv);
-                });
-            }
-
-            function addScore(index) {
-                players[index].score += 10;
-                if (players[index].score >= maxScore) {
-                    alert(`¡${players[index].name} ha ganado!`);
-                    setTimeout(() => location.reload(), 3000);
-                }
-                updateScores();
-            }
-
-            function subtractScore(index) {
-                if (players[index].score > 0) {
-                    players[index].score -= 10;
-                    updateScores();
-                } else {
-                    alert("¡Ojo! La puntuación no puede ser menor a 0");
-                }
-            }
 
             document.getElementById("new-question").addEventListener("click", () => {
                 let availableQuestions = questions.filter(q => !usedQuestions.has(q.img));
@@ -133,8 +54,6 @@
                 }
                 const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
                 usedQuestions.add(randomQuestion.img);
-
-                // Mostramos la imagen en lugar de texto
                 document.getElementById("question").innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover">`;
             });
 
@@ -148,27 +67,7 @@
                 { img: "images/imagen7.jpg"},
                 { img: "images/imagen8.jpg"},               
                 { img: "images/imagen9.jpg"},
-                { img: "images/imagen10.jpg"},
-                { img: "images/imagen11.jpg"},               
-                { img: "images/imagen12.jpg"},
-                { img: "images/imagen13.jpg"},
-                { img: "images/imagen14.jpg"},               
-                { img: "images/imagen15.jpg"},
-                { img: "images/imagen16.jpg"},
-                { img: "images/imagen17.jpg"},              
-                { img: "images/imagen18.jpg"},
-                { img: "images/imagen19.jpg"},
-                { img: "images/imagen20.jpg"},            
-                { img: "images/imagen21.jpg"},
-                { img: "images/imagen22.jpg"},
-                { img: "images/imagen23.jpg"},          
-                { img: "images/imagen24.jpg"},
-                { img: "images/imagen25.jpg"},
-                { img: "images/imagen26.jpg"},            
-                { img: "images/imagen27.jpg"},
-                { img: "images/imagen28.jpg"},
-                { img: "images/imagen29.jpg"},
-                { img: "images/imagen30.jpg"}
+                { img: "images/imagen10.jpg"}
             ];
 
             const usedQuestions = new Set();
@@ -176,9 +75,7 @@
     </script>
 
     <footer class="fixed bottom-4 w-full text-center">
-        <p class="text-black text-sm">
-            &copy; 2025 Propiedad de Kevin Roldán y Judith Sancerni
-        </p>
+        <p class="text-black text-sm">&copy; 2025 Propiedad de Kevin Roldán y Judith Sancerni</p>
     </footer>
 </body>
 
