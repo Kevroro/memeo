@@ -46,12 +46,36 @@
                 transform: scale(1);
             }
         }
+
+        /* Estilo de la página de inicio */
+        #start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffd230;
+            z-index: 20;
+        }
+
+        #start-screen img {
+            max-width: 80%;
+            animation: fadeIn 2s ease-in-out;
+        }
     </style>
 </head>
 
 <body class="custom-bg font-sans">
-    <!-- INICIO DE LA PÁGINA -->
-    <div id="game-screen" class="fixed inset-0 flex flex-col justify-center items-center py-0 z-30">
+    <!-- PÁGINA DE INICIO -->
+    <div id="start-screen">
+        <img src="logo.png" alt="Logo" class="animate-image">
+    </div>
+
+    <!-- PÁGINA DE JUEGO -->
+    <div id="game-screen" class="hidden fixed inset-0 flex flex-col justify-center items-center py-0 z-10">
         <div class="question-box p-8 rounded-xl shadow-lg max-w-lg w-full text-center px-4 sm:px-6">
             <div id="emoji" class="emoji mb-4"></div>
             <div id="question" class="text-white text-2xl mb-6">¡Clica en la imagen para memearte!</div>
@@ -60,11 +84,12 @@
             </button>
         </div>
     </div>
-    <!-- FIN DE LA PÁGINA -->
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
+            // Transición a la pantalla de juego después de 3 segundos
             setTimeout(() => {
+                document.getElementById("start-screen").style.display = "none";
                 document.getElementById("game-screen").classList.remove("hidden");
             }, 3000);
 
@@ -97,11 +122,11 @@
         });
     </script>
 
-    <!-- INICIO DEL PIE DE PÁGINA -->
+    <!-- PIE DE PÁGINA -->
     <footer class="fixed bottom-4 w-full text-center">
-        <p class="text-black text-sm">&copy; 2025 v9 Propiedad de Kevin Roldán y Judith Sancerni</p>
+        <p class="text-black text-sm">&copy; 2025 v10 Propiedad de Kevin Roldán y Judith Sancerni</p>
     </footer>
-    <!-- FIN DEL PIE DE PÁGINA -->
 </body>
 
 </html>
+
