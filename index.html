@@ -2,26 +2,19 @@
 <html lang="es">
 
 <head>
-    <link rel="manifest" href="manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="Memeo">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <link rel="apple-touch-icon" href="logo.png">
-    <link rel="icon" href="logo.png" type="image/png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Memeo</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         .custom-bg {
-            background-color: #ffd230; /* Color de fondo actualizado */
+            background-color: #ffd230;
         }
 
         .question-box {
             background: linear-gradient(145deg, #000000, #000000);
-            margin: 0 20px; /* Añadido margen a los laterales */
+            margin: 0 20px;
         }
 
         @media (max-width: 768px) {
@@ -32,12 +25,8 @@
                 height: 100vh;
             }
 
-            .w-24 {
-                width: 80px; /* Logotipo más grande */
-            }
-
             .question-box {
-                width: 90%; /* Ajuste en móviles */
+                width: 90%;
                 max-width: 90%;
             }
         }
@@ -51,6 +40,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             100% {
                 opacity: 1;
                 transform: scale(1);
@@ -61,12 +51,7 @@
 
 <body class="custom-bg font-sans">
     <!-- INICIO DE LA PÁGINA -->
-    <div id="splash-screen" class="fixed inset-0 flex items-center justify-center bg-white z-50">
-        <img src="logoblanco.png" alt="Logotipo" class="w-1/2">
-    </div>
-
-    <div id="game-screen" class="hidden fixed inset-0 flex flex-col justify-center items-center py-0 z-30">
-        <img src="logo.png" alt="Logotipo" class="w-28 mb-4">
+    <div id="game-screen" class="fixed inset-0 flex flex-col justify-center items-center py-0 z-30">
         <div class="question-box p-8 rounded-xl shadow-lg max-w-lg w-full text-center px-4 sm:px-6">
             <div id="emoji" class="emoji mb-4"></div>
             <div id="question" class="text-white text-2xl mb-6">¡Clica en la imagen para memearte!</div>
@@ -80,7 +65,6 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
-                document.getElementById("splash-screen").classList.add("hidden");
                 document.getElementById("game-screen").classList.remove("hidden");
             }, 3000);
 
@@ -115,7 +99,7 @@
 
     <!-- INICIO DEL PIE DE PÁGINA -->
     <footer class="fixed bottom-4 w-full text-center">
-        <p class="text-black text-sm">&copy; 2025 v7 Propiedad de Kevin Roldán y Judith Sancerni</p>
+        <p class="text-black text-sm">&copy; 2025 v9 Propiedad de Kevin Roldán y Judith Sancerni</p>
     </footer>
     <!-- FIN DEL PIE DE PÁGINA -->
 </body>
