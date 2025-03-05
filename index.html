@@ -64,7 +64,7 @@
         <img src="logo.png" alt="Logotipo" class="w-1/2">
     </div>
 
-    <div id="game-screen" class="hidden fixed inset-0 flex flex-col justify-center items-center py-10 z-30">
+    <div id="game-screen" class="hidden fixed inset-0 flex flex-col justify-center items-center py-2 z-30">
         <img src="logo.png" alt="Logotipo" class="w-24 mb-4">
         <div class="question-box p-8 rounded-xl shadow-lg max-w-lg w-full text-center px-4 sm:px-6">
             <div id="emoji" class="emoji mb-4"></div>
@@ -89,7 +89,7 @@
                 const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
                 usedQuestions.add(randomQuestion.img);
                 const questionElement = document.getElementById("question");
-                questionElement.innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover animate-image">`;
+                questionElement.innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover">`;
             });
 
             const questions = [
@@ -110,7 +110,7 @@
     </script>
 
     <footer class="fixed bottom-4 w-full text-center">
-        <p class="text-black text-sm">&copy; 2025 v3 Propiedad de Kevin Roldán y Judith Sancerni</p>
+        <p class="text-black text-sm">&copy; 2025 v4 Propiedad de Kevin Roldán y Judith Sancerni</p>
     </footer>
 </body>
 
