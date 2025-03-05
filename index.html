@@ -30,8 +30,6 @@
                 justify-content: center;
                 align-items: center;
                 height: 100vh;
-                padding-top: 0; /* Eliminamos margen superior innecesario */
-                overflow: hidden; /* Evitar desplazamiento no deseado */
             }
 
             .w-24 {
@@ -44,15 +42,19 @@
             }
         }
 
-        /* Estilo para la animación de "ruleta" */
-        .roulette-images {
-            display: flex;
-            transition: transform 1s ease-out; /* Transición suave entre las imágenes */
+        .animate-image {
+            animation: fadeIn 1s ease-in-out;
         }
 
-        .roulette-images img {
-            width: 100%;
-            height: auto;
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
     </style>
 </head>
@@ -78,62 +80,39 @@
                 document.getElementById("game-screen").classList.remove("hidden");
             }, 3000);
 
-            let startX = 0;
-            let endX = 0;
-            let threshold = 100; // umbral para detectar el deslizamiento
-            let currentIndex = 0; // Índice de la imagen actual
+            document.getElementById("new-question").addEventListener("click", () => {
+                let availableQuestions = questions.filter(q => !usedQuestions.has(q.img));
+                if (availableQuestions.length === 0) {
+                    usedQuestions.clear();
+                    availableQuestions = questions;
+                }
+                const randomQuestion = availableQuestions[Math.floor(Math.random() * availableQuestions.length)];
+                usedQuestions.add(randomQuestion.img);
+                const questionElement = document.getElementById("question");
+                questionElement.innerHTML = `<img src="${randomQuestion.img}" alt="Imagen de pregunta" class="w-full h-64 object-cover animate-image">`;
+            });
 
-            const images = [
-                "images/imagen1.jpg",
-                "images/imagen2.jpg",
-                "images/imagen3.jpg",
-                "images/imagen4.jpg",
-                "images/imagen5.jpg",
-                "images/imagen6.jpg",
-                "images/imagen7.jpg",
-                "images/imagen8.jpg",
-                "images/imagen9.jpg",
-                "images/imagen10.jpg"
+            const questions = [
+                { img: "images/imagen1.jpg"},
+                { img: "images/imagen2.jpg"},
+                { img: "images/imagen3.jpg"},
+                { img: "images/imagen4.jpg"},
+                { img: "images/imagen5.jpg"},
+                { img: "images/imagen6.jpg"},
+                { img: "images/imagen7.jpg"},
+                { img: "images/imagen8.jpg"},               
+                { img: "images/imagen9.jpg"},
+                { img: "images/imagen10.jpg"}
             ];
 
-            const imagesContainer = document.getElementById("question");
-            const imagesHTML = images.map(src => `<img src="${src}" alt="Imagen de pregunta">`).join("");
-            imagesContainer.innerHTML = `<div class="roulette-images">${imagesHTML}</div>`;
-
-            const rouletteImages = document.querySelector('.roulette-images');
-
-            // Detectar el deslizamiento de izquierda a derecha
-            document.getElementById("game-screen").addEventListener("touchstart", (e) => {
-                startX = e.changedTouches[0].screenX;
-            });
-
-            document.getElementById("game-screen").addEventListener("touchend", (e) => {
-                endX = e.changedTouches[0].screenX;
-                if (startX - endX > threshold) {
-                    // Deslizar a la izquierda, pasando a la siguiente imagen
-                    currentIndex = (currentIndex + 1) % images.length;
-                    updateImagePosition();
-                } else if (endX - startX > threshold) {
-                    // Deslizar a la derecha, volviendo a la imagen anterior
-                    currentIndex = (currentIndex - 1 + images.length) % images.length;
-                    updateImagePosition();
-                }
-            });
-
-            function updateImagePosition() {
-                rouletteImages.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }
-
-            document.getElementById("new-question").addEventListener("click", () => {
-                currentIndex = (currentIndex + 1) % images.length;
-                updateImagePosition();
-            });
+            const usedQuestions = new Set();
         });
     </script>
 
     <footer class="fixed bottom-4 w-full text-center">
-        <p class="text-black text-sm">&copy; v2 2025 Propiedad de Kevin Roldán y Judith Sancerni</p>
+        <p class="text-black text-sm">&copy; 2025 v3 Propiedad de Kevin Roldán y Judith Sancerni</p>
     </footer>
 </body>
 
 </html>
+
